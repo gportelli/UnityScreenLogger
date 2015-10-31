@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Main : MonoBehaviour
+public class Test : MonoBehaviour
 {
     float timeout = 5, lasttime = -1;
     int i = 0;
