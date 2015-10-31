@@ -1,4 +1,4 @@
-# UnityScreenLogger
+# Unity Screen Logger
 A simple on-screen logger for Unity 3D.
 
 Editor parameters:
