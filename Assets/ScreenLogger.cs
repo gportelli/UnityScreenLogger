@@ -26,21 +26,25 @@ public class ScreenLogger : MonoBehaviour
 
     public LogAnchor AnchorPosition = LogAnchor.BottomLeft;
 
-    [Range(10, 40)]
     public int FontSize = 14;
 
-    [Range(0f, 0.8f)]
+    [Range(0f, 01f)]
     public float BackgroundOpacity = 0.5f;
+    public Color BackgroundColor = Color.black;
 
-    public bool StackTraceLog = false;
+    public bool LogMessages = true;
+    public bool LogWarnings = true;
+    public bool LogErrors   = true;
+
+    public Color MessageColor = Color.white;
+    public Color WarningColor = Color.yellow;
+    public Color ErrorColor = new Color(1, 0.5f, 0.5f);
+
+    public bool StackTraceMessage = false;
     public bool StackTraceWarning = false;
     public bool StackTraceError = true;
     public bool StackTraceException = true;
     public bool StackTraceAssert = true;
-
-    public Color NormalColor = Color.white;
-    public Color WarningColor = Color.yellow;
-    public Color ErrorColor = new Color(1, 0.5f, 0.5f);
 
     static Queue<LogMessage> queue = new Queue<LogMessage>();
 
@@ -50,7 +54,8 @@ public class ScreenLogger : MonoBehaviour
     public void Awake()
     {
         Texture2D back = new Texture2D(1, 1);
-        back.SetPixel(0, 0, new Color(0, 0, 0, BackgroundOpacity));
+        BackgroundColor.a = BackgroundOpacity;
+        back.SetPixel(0, 0, BackgroundColor);
         back.Apply();
 
         styleContainer = new GUIStyle();
@@ -130,7 +135,7 @@ public class ScreenLogger : MonoBehaviour
                     break;
 
                 case LogType.Log:
-                    styleText.normal.textColor = NormalColor;
+                    styleText.normal.textColor = MessageColor;
                     break;
 
                 case LogType.Assert:
@@ -140,7 +145,7 @@ public class ScreenLogger : MonoBehaviour
                     break;
 
                 default:
-                    styleText.normal.textColor = NormalColor;
+                    styleText.normal.textColor = MessageColor;
                     break;
             }
 
@@ -152,12 +157,18 @@ public class ScreenLogger : MonoBehaviour
 
     void HandleLog(string message, string stackTrace, LogType type)
     {
+        if (type == LogType.Assert && !LogErrors) return;
+        if (type == LogType.Error && !LogErrors) return;
+        if (type == LogType.Exception && !LogErrors) return;
+        if (type == LogType.Log && !LogMessages) return;
+        if (type == LogType.Warning && !LogWarnings) return;
+
         queue.Enqueue(new LogMessage(message, type));
 
         if (type == LogType.Assert && !StackTraceAssert) return;
         if (type == LogType.Error && !StackTraceError) return;
         if (type == LogType.Exception && !StackTraceException) return;
-        if (type == LogType.Log && !StackTraceLog) return;
+        if (type == LogType.Log && !StackTraceMessage) return;
         if (type == LogType.Warning && !StackTraceWarning) return;
 
         string[] trace = stackTrace.Split(new char[] { '\n' });
