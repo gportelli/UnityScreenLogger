@@ -5,6 +5,7 @@ Temp/
 Obj/
 UnityGenerated/
 Library/
+ProjectSettings/ProjectVersion.txt
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #

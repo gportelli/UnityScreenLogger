@@ -3,31 +3,32 @@ using System.Collections;
 
 public class Main : MonoBehaviour
 {
-    public int lines;
-    int i = 1;
+    float timeout = 5, lasttime = -1;
+    int i = 0;
 
-    // Use this for initialization
     void Start()
     {
         TestMessageTypes();
-        //Debug.Log(Screen.height);
-        //TestSize(lines);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetButtonDown("Fire1"))
         {
             Debug.Log(i++);
         }
-    }
 
-    void TestSize(int lines)
-    {
-        for (; i <= lines; i++)
+        timeout -= Time.deltaTime;
+
+        if ((int)lasttime != (int)timeout && timeout > 0)
+            Debug.Log("-" + ((int)timeout + 1));
+
+        lasttime = timeout;
+
+        if (timeout <= 0)
         {
-            Debug.Log(i);
+            Debug.Log("Loading new scene...");
+            Application.LoadLevel(1);
         }
     }
 
@@ -36,10 +37,5 @@ public class Main : MonoBehaviour
         Debug.Log("Log message...");
         Debug.LogWarning("Warning message...");
         Debug.LogError("Error message...");
-
-        int a = 0, b = 5;
-        int c = b / a;
     }
-
-
 }
