@@ -34,17 +34,15 @@ public class ScreenLogger : MonoBehaviour
 
     public bool LogMessages = true;
     public bool LogWarnings = true;
-    public bool LogErrors   = true;
+    public bool LogErrors = true;
 
     public Color MessageColor = Color.white;
     public Color WarningColor = Color.yellow;
     public Color ErrorColor = new Color(1, 0.5f, 0.5f);
 
-    public bool StackTraceMessage = false;
-    public bool StackTraceWarning = false;
-    public bool StackTraceError = true;
-    public bool StackTraceException = true;
-    public bool StackTraceAssert = true;
+    public bool StackTraceMessages = false;
+    public bool StackTraceWarnings = false;
+    public bool StackTraceErrors = true;
 
     static Queue<LogMessage> queue = new Queue<LogMessage>();
 
@@ -76,14 +74,22 @@ public class ScreenLogger : MonoBehaviour
 
         queue = new Queue<LogMessage>();
 
+#if UNITY_4_5 || UNITY_4_6
+        Application.RegisterLogCallback(HandleLog);
+#else
         Application.logMessageReceived += HandleLog;
+#endif
     }
 
     void OnDisable()
     {
         if (!ShowInEditor && Application.isEditor) return;
 
+#if UNITY_4_5 || UNITY_4_6
+        Application.RegisterLogCallback(null);
+#else
         Application.logMessageReceived -= HandleLog;
+#endif
     }
 
     void Update()
@@ -102,7 +108,8 @@ public class ScreenLogger : MonoBehaviour
         float h = (Screen.height - 2 * Margin) * Height;
         float x = 1, y = 1;
 
-        switch(AnchorPosition) {
+        switch (AnchorPosition)
+        {
             case LogAnchor.BottomLeft:
                 x = Margin;
                 y = Margin + (Screen.height - 2 * Margin) * (1 - Height);
@@ -123,7 +130,7 @@ public class ScreenLogger : MonoBehaviour
                 y = Margin;
                 break;
         }
-        
+
         GUILayout.BeginArea(new Rect(x, y, w, h), styleContainer);
 
         foreach (LogMessage m in queue)
@@ -165,11 +172,11 @@ public class ScreenLogger : MonoBehaviour
 
         queue.Enqueue(new LogMessage(message, type));
 
-        if (type == LogType.Assert && !StackTraceAssert) return;
-        if (type == LogType.Error && !StackTraceError) return;
-        if (type == LogType.Exception && !StackTraceException) return;
-        if (type == LogType.Log && !StackTraceMessage) return;
-        if (type == LogType.Warning && !StackTraceWarning) return;
+        if (type == LogType.Assert && !StackTraceErrors) return;
+        if (type == LogType.Error && !StackTraceErrors) return;
+        if (type == LogType.Exception && !StackTraceErrors) return;
+        if (type == LogType.Log && !StackTraceMessages) return;
+        if (type == LogType.Warning && !StackTraceWarnings) return;
 
         string[] trace = stackTrace.Split(new char[] { '\n' });
 

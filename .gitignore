@@ -6,6 +6,9 @@ Obj/
 UnityGenerated/
 Library/
 ProjectSettings/ProjectVersion.txt
+AssetStore/
+Assets/AssetStoreTools/
+Assets/AssetStoreTools.meta
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
