@@ -58,7 +58,7 @@ public class ScreenLogger : MonoBehaviour
 
         styleContainer = new GUIStyle();
         styleContainer.normal.background = back;
-        styleContainer.wordWrap = true;
+        styleContainer.wordWrap = false;
         styleContainer.padding = new RectOffset(padding, padding, padding, padding);
 
         styleText = new GUIStyle();
@@ -170,7 +170,10 @@ public class ScreenLogger : MonoBehaviour
         if (type == LogType.Log && !LogMessages) return;
         if (type == LogType.Warning && !LogWarnings) return;
 
-        queue.Enqueue(new LogMessage(message, type));
+        string[] lines = message.Split(new char[] { '\n' });
+
+        foreach (string l in lines)
+            queue.Enqueue(new LogMessage(l, type));
 
         if (type == LogType.Assert && !StackTraceErrors) return;
         if (type == LogType.Error && !StackTraceErrors) return;
