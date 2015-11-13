@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AClockworkBerry;
 
 public class Test : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Test : MonoBehaviour
 
     void Start()
     {
+        ScreenLogger.IsPersistent = true;
+        ScreenLogger.Instance.ShowLog = true;
+
         TestMessageTypes();
     }
 

@@ -2,16 +2,20 @@
 using System.Collections;
 using UnityEditor;
 
-public class ScreenLoggerEditor : Editor {
-
-    [MenuItem("GameObject/Create Other/Screen Logger")]
-    static void AddScreenLogger()
+namespace AClockworkBerry
+{
+    public class ScreenLoggerEditor : Editor
     {
-        if (GameObject.FindObjectOfType<ScreenLogger>() == null)
+
+        [MenuItem("GameObject/Create Other/Screen Logger")]
+        static void AddScreenLogger()
         {
-            GameObject gameObject = new GameObject();
-            gameObject.name = "ScreenLogger";
-            gameObject.AddComponent<ScreenLogger>();
+            if (GameObject.FindObjectOfType<ScreenLogger>() == null)
+            {
+                GameObject gameObject = new GameObject();
+                gameObject.name = "ScreenLogger";
+                gameObject.AddComponent<ScreenLogger>();
+            }
         }
     }
 }
