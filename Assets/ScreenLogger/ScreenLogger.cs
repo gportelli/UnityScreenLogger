@@ -70,6 +70,8 @@ namespace AClockworkBerry
         GUIStyle styleContainer, styleText;
         int padding = 5;
 
+        private bool destroying = false;
+
         public static ScreenLogger Instance
         {
             get
@@ -102,6 +104,18 @@ namespace AClockworkBerry
 
         public void Awake()
         {
+            ScreenLogger[] obj = GameObject.FindObjectsOfType<ScreenLogger>();
+
+            if (obj.Length > 1)
+            {
+                Debug.Log("Destroying ScreenLogger, already exists...");
+                
+                destroying = true;
+
+                Destroy(gameObject);
+                return;
+            }
+
             Texture2D back = new Texture2D(1, 1);
             BackgroundColor.a = BackgroundOpacity;
             back.SetPixel(0, 0, BackgroundColor);
@@ -121,6 +135,7 @@ namespace AClockworkBerry
 
         void OnEnable()
         {
+            Debug.Log("OnEnable");
             if (!ShowInEditor && Application.isEditor) return;
 
             queue = new Queue<LogMessage>();
@@ -134,6 +149,8 @@ namespace AClockworkBerry
 
         void OnDisable()
         {
+            if (destroying) return;
+
             if (!ShowInEditor && Application.isEditor) return;
 
 #if UNITY_4_5 || UNITY_4_6

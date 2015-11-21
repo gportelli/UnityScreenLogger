@@ -9,7 +9,6 @@ public class Test : MonoBehaviour
 
     void Start()
     {
-        ScreenLogger.IsPersistent = true;
         ScreenLogger.Instance.ShowLog = true;
 
         TestMessageTypes();
@@ -32,7 +31,7 @@ public class Test : MonoBehaviour
         if (timeout <= 0)
         {
             Debug.Log("Loading new scene...");
-            Application.LoadLevel(1);
+            Application.LoadLevel("ExampleScene");
         }
     }
 
