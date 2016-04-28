@@ -116,6 +116,14 @@ namespace AClockworkBerry
                 return;
             }
 
+            InitStyles();
+
+            if (IsPersistent)
+                DontDestroyOnLoad(this);
+        }
+
+        private void InitStyles()
+        {
             Texture2D back = new Texture2D(1, 1);
             BackgroundColor.a = BackgroundOpacity;
             back.SetPixel(0, 0, BackgroundColor);
@@ -128,19 +136,15 @@ namespace AClockworkBerry
 
             styleText = new GUIStyle();
             styleText.fontSize = FontSize;
-
-            if (IsPersistent)
-                DontDestroyOnLoad(this);
         }
 
         void OnEnable()
         {
-            Debug.Log("OnEnable");
             if (!ShowInEditor && Application.isEditor) return;
 
             queue = new Queue<LogMessage>();
 
-#if UNITY_4_5 || UNITY_4_6
+#if UNITY_4_5 || UNITY_4_6 || UNITY_4_7
             Application.RegisterLogCallback(HandleLog);
 #else
             Application.logMessageReceived += HandleLog;
@@ -149,11 +153,10 @@ namespace AClockworkBerry
 
         void OnDisable()
         {
+            // If destroyed because already exists, don't need to de-register callback
             if (destroying) return;
 
-            if (!ShowInEditor && Application.isEditor) return;
-
-#if UNITY_4_5 || UNITY_4_6
+#if UNITY_4_5 || UNITY_4_6 || UNITY_4_7
             Application.RegisterLogCallback(null);
 #else
             Application.logMessageReceived -= HandleLog;
@@ -164,7 +167,11 @@ namespace AClockworkBerry
         {
             if (!ShowInEditor && Application.isEditor) return;
 
-            while (queue.Count > ((Screen.height - 2 * Margin) * Height - 2 * padding) / styleText.lineHeight)
+            float InnerHeight = (Screen.height - 2 * Margin) * Height - 2 * padding;
+            int TotalRows = (int) (InnerHeight / styleText.lineHeight);
+
+            // Remove overflowing rows
+            while (queue.Count > TotalRows)
                 queue.Dequeue();
         }
 
@@ -254,6 +261,11 @@ namespace AClockworkBerry
 
             foreach (string t in trace)
                 if (t.Length != 0) queue.Enqueue(new LogMessage("  " + t, type));
+        }
+
+        public void InspectorGUIUpdated()
+        {
+            InitStyles();
         }
     }
 }
