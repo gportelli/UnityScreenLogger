@@ -1,10 +1,10 @@
 Screen Logger for Unity 3D
-Version 1.0
-Giuseppe Portelli - giuseppe.portelli@gmail.com 
+Version 1.1
+Giuseppe Portelli - giuseppe@aclockworkberry.com 
 
 Requires Unity 4.5 or higher.
 
-A simple and fully customizable screen logger. Just put it on a scene and you will see on screen output for each call to Debug.Log/LogWarning/LogError. 
+Screen Logger is a simple and fully customizable screen logger. Just put it on a scene and you will see on screen output for each call to Debug.Log/LogWarning/LogError. 
 
 Features
 * Persistent
@@ -18,9 +18,18 @@ Features
 Documentation
 Screen logging is very useful when you are debugging a build of your game, for example when you are building for mobile or game consoles, or when you are testing things like screen resolution management which you cannot test directly in editor.
 
-Screen Logger intercepts every call to Debug.Log / Debug.LogWarning / Debug.LogError and and displays each log message on a customizable screen overlay, you won't need to add extra logging instructions to your code, you will get on-screen the same output you have in editor. 
+Screen Logger intercepts every call to Debug.Log / Debug.LogWarning / Debug.LogError and displays each log message on a customizable screen overlay, you won't need to add extra logging logic to your code, you will get on-screen the same output you have in editor including stack traces.
 
-In order to add screen loggin to your game, open a scene and select from main menu: GameObject > Create Other > Screen Logger. A new ScreenLogger game object will be added to your scene. From this object you can customize all the logging features using the inspector. If you add the Screen Logger to the game's first scene and you keep the "Is Persistent" flag set to true, the object will persist over all the game scenes and you will always see logs on screen even when you load a new scene.
+Open a scene and select from main menu: GameObject > Create Other > Screen Logger. A new ScreenLogger game object will be added to your scene. From this object you can customize all the logging features using the inspector. If you add the Screen Logger to the game's first scene and you keep the "Is Persistent" flag set to true, the object will persist over all the game scenes and you will always see logs on screen even when you load a new scene.
+
+You can also add the logger to your scene by code. The ScreenLogger class implements a Singleton pattern, you can access the unique instance of ScreenLogger from ScreenLogger.Instance.
+If no logger has been added to the scene yet, the first call to ScreenLogger.Instance will create a new ScreenLogger and add it to the scene.
+
+// Shows the screen logger (creates and adds it to the scene if it doesn't exist)
+ScreenLogger.Instance.ShowLog = true;
+
+// Hides the screen logger
+ScreenLogger.Instance.ShowLog = false;
 
 Screen Logger Properties
 * Is Persistent - if set to true, the Screen Logger object will persist when you load a new scene
