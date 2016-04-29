@@ -1,6 +1,8 @@
 # Unity Screen Logger
 A simple on-screen logger for Unity 3D.
 
+![Screen Logger](https://raw.githubusercontent.com/gportelli/UnityScreenLogger/master/imgs/screen-logger.png)
+
 Editor parameters:
 - Persistent script
 - Font size
@@ -11,3 +13,5 @@ Editor parameters:
 - Background color and opacity
 - Show in editor flag
 - Enable stack trace logging for each message type
+
+[![Download on asset store](https://raw.githubusercontent.com/gportelli/UnityScreenLogger/master/imgs/asset-store.png)](https://www.assetstore.unity3d.com/en/#!/content/49114)
