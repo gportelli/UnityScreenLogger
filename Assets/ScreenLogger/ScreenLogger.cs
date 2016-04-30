@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace AClockworkBerry
 {
@@ -83,8 +84,16 @@ namespace AClockworkBerry
                 // Object not found, we create a new one
                 if (instance == null)
                 {
-                    // Awake will be called during the GameObject instantiation
-                    instance = new GameObject("ScreenLogger", typeof(ScreenLogger)).GetComponent<ScreenLogger>();
+                    // Try to load the default prefab
+                    try
+                    {
+                        instance = Instantiate(Resources.Load("ScreenLoggerPrefab", typeof(ScreenLogger))) as ScreenLogger;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Failed to load default Screen Logger prefab...");
+                        instance = new GameObject("ScreenLogger", typeof(ScreenLogger)).GetComponent<ScreenLogger>();
+                    }
 
                     // Problem during the creation, this should not happen
                     if (instance == null)
