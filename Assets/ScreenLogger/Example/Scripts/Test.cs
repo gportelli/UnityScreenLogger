@@ -16,20 +16,17 @@ public class Test : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log(i++);
-        }
-
-        timeout -= Time.deltaTime;
+        if (timeout > 0)
+            timeout -= Time.deltaTime;
 
         if ((int)lasttime != (int)timeout && timeout > 0)
             Debug.Log("-" + ((int)timeout + 1));
 
         lasttime = timeout;
 
-        if (timeout <= 0)
+        if (timeout <= 0 && timeout != -1)
         {
+            timeout = -1;
             Debug.Log("Loading new scene...");
             Application.LoadLevel("ExampleScene");
         }
