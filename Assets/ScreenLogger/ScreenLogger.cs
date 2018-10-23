@@ -89,7 +89,7 @@ namespace AClockworkBerry
                     {
                         instance = Instantiate(Resources.Load("ScreenLoggerPrefab", typeof(ScreenLogger))) as ScreenLogger;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         Debug.Log("Failed to load default Screen Logger prefab...");
                         instance = new GameObject("ScreenLogger", typeof(ScreenLogger)).GetComponent<ScreenLogger>();

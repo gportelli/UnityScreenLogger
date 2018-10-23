@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AClockworkBerry;
+using UnityEngine.SceneManagement;
 
 public class Test : MonoBehaviour
 {
     float timeout = 5, lasttime = -1;
-    int i = 0;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class Test : MonoBehaviour
         {
             timeout = -1;
             Debug.Log("Loading new scene...");
-            Application.LoadLevel("ExampleScene");
+            SceneManager.LoadScene("ExampleScene");
         }
     }
 
