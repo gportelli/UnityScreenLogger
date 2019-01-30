@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEngine.SceneManagement;
 
 namespace AClockworkBerry
 {
@@ -73,7 +72,6 @@ namespace AClockworkBerry
         int padding = 5;
 
         private bool destroying = false;
-		private bool styleChanged = true;
 
         public static ScreenLogger Instance
         {
@@ -131,16 +129,9 @@ namespace AClockworkBerry
 
             if (IsPersistent)
                 DontDestroyOnLoad(this);
-
-			SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-		void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-		{
-			styleChanged = true;
-		}
-
-		private void InitStyles()
+        private void InitStyles()
         {
             Texture2D back = new Texture2D(1, 1);
             BackgroundColor.a = BackgroundOpacity;
@@ -154,9 +145,7 @@ namespace AClockworkBerry
 
             styleText = new GUIStyle();
             styleText.fontSize = FontSize;
-
-			styleChanged = false;
-		}
+        }
 
         void OnEnable()
         {
@@ -199,8 +188,6 @@ namespace AClockworkBerry
         {
             if (!ShowLog) return;
             if (!ShowInEditor && Application.isEditor) return;
-
-			if (styleChanged) InitStyles();
 
             float w = (Screen.width - 2 * Margin) * Width;
             float h = (Screen.height - 2 * Margin) * Height;
@@ -287,8 +274,8 @@ namespace AClockworkBerry
 
         public void InspectorGUIUpdated()
         {
-			styleChanged = true;
-		}
+            InitStyles();
+        }
     }
 }
 
