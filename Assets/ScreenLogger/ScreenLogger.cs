@@ -167,7 +167,8 @@ namespace AClockworkBerry
 #if UNITY_4_5 || UNITY_4_6 || UNITY_4_7
             Application.RegisterLogCallback(HandleLog);
 #else
-			Application.logMessageReceived += HandleLog;
+			//Application.logMessageReceived += HandleLog;
+			Application.logMessageReceivedThreaded += HandleLog;
 #endif
 		}
 
@@ -179,7 +180,8 @@ namespace AClockworkBerry
 #if UNITY_4_5 || UNITY_4_6 || UNITY_4_7
             Application.RegisterLogCallback(null);
 #else
-			Application.logMessageReceived -= HandleLog;
+			//Application.logMessageReceived -= HandleLog;
+			Application.logMessageReceivedThreaded -= HandleLog;
 #endif
 		}
 
